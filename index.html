@@ -4,28 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplikasi Berita Acara Pemeriksaan Hidran</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script src="js/tailwind.config.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-gray-100 min-h-screen text-gray-800 pb-20 pt-10">
+<body class="bg-gray-100 min-h-screen text-gray-800 pb-20 pt-4 md:pt-10 px-2 md:px-0">
 
-    <div class="max-w-3xl mx-auto bg-white p-10 shadow-2xl rounded-2xl border border-gray-200">
+    <div class="max-w-3xl mx-auto bg-white p-5 md:p-10 shadow-2xl rounded-2xl border border-gray-200">
         <form id="ba-form" onsubmit="return false;">
-            <div class="text-center mb-8 border-b-2 border-red-500 pb-4">
-                <h1 class="text-3xl font-extrabold text-brand-600 mb-2">Form Berita Acara Hidran</h1>
-                <p class="text-sm text-gray-500">Lengkapi seluruh data di bawah ini.</p>
+            <div class="text-center mb-6 md:mb-8 border-b-2 border-red-500 pb-4">
+                <h1 class="text-2xl md:text-3xl font-extrabold text-brand-600 mb-2">Form Berita Acara Hidran</h1>
+                <p class="text-xs md:text-sm text-gray-500">Lengkapi seluruh data di bawah ini.</p>
             </div>
 
             <h2 class="section-title">HEADER & WAKTU PEMERIKSAAN</h2>
             <label>Nomor Dokumen Berita Acara <span class="text-red-500">*</span></label>
-            <div class="flex items-center space-x-2 w-full bg-gray-50 p-2 border rounded">
+            <div class="flex flex-wrap items-center gap-2 w-full bg-gray-50 p-2 border rounded">
                 <span class="text-sm">Nomor:</span>
                 <input type="text" id="in-no-urut" required class="input-field !w-20 !py-1 text-center font-bold" placeholder=".....">
                 <span class="font-bold">/ BA-PH /</span>
@@ -43,7 +39,7 @@
             <label>Alamat Lengkap <span class="text-red-500">*</span></label>
             <textarea id="in-alamat" required class="input-field" rows="2" placeholder="Masukkan nama jalan, nomor, RT/RW..."></textarea>
             
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
                     <label>Kecamatan <span class="text-red-500">*</span></label>
                     <select id="in-kecamatan" required class="input-field cursor-pointer">
@@ -65,24 +61,24 @@
             </div>
 
             <h2 class="section-title">II. TIM PEMERIKSA</h2>
-            <div class="grid grid-cols-2 gap-4 border p-4 rounded bg-gray-50">
-                <div class="col-span-2 font-bold text-gray-700">Pemeriksa 1 (Gulkarmat)</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border p-4 rounded bg-gray-50">
+                <div class="md:col-span-2 font-bold text-gray-700">Pemeriksa 1 (Gulkarmat)</div>
                 <div><label>Nama <span class="text-red-500">*</span></label><input type="text" id="in-pem1-nama" required class="input-field" placeholder="Nama Lengkap"></div>
                 <div><label>Jabatan <span class="text-red-500">*</span></label><input type="text" id="in-pem1-jab" required class="input-field" placeholder="Jabatan"></div>
                 
-                <div class="col-span-2 font-bold text-gray-700 mt-4 border-t pt-4">Pemeriksa 2 (PAM JAYA)</div>
+                <div class="md:col-span-2 font-bold text-gray-700 mt-2 border-t pt-4">Pemeriksa 2 (PAM JAYA)</div>
                 <div><label>Nama <span class="text-red-500">*</span></label><input type="text" id="in-pem2-nama" required class="input-field" placeholder="Nama Lengkap"></div>
                 <div><label>Jabatan <span class="text-red-500">*</span></label><input type="text" id="in-pem2-jab" required class="input-field" placeholder="Jabatan"></div>
             </div>
 
             <h2 class="section-title">III. OBJEK PEMERIKSAAN</h2>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><label>Nomor/Kode Rek Hydrant <span class="text-red-500">*</span></label><input type="text" id="in-rek-hydrant" required class="input-field" placeholder="Contoh: 12.3456"></div>
                 <div><label>Kode Hydrant Kota <span class="text-red-500">*</span></label><input type="text" id="in-kode-hydrant" required class="input-field" placeholder="Contoh: H-102"></div>
             </div>
 
             <h2 class="section-title">IV. HASIL PEMERIKSAAN</h2>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label>1. Kondisi fisik badan hidran <span class="text-red-500">*</span></label>
                     <select id="in-hasil-1" required class="input-field" onchange="updateCheckboxes('hasil-1', this.value, ['Baik', 'Rusak', 'Hilang'])">
@@ -132,25 +128,25 @@
             <label>Catatan/Rekomendasi <span class="text-red-500">*</span></label>
             <textarea id="in-catatan" required class="input-field" rows="3" placeholder="Tulis catatan lapangan..."></textarea>
 
-            <h2 class="section-title">VI. DOKUMENTASI FOTO (HALAMAN 2 - MAKS 2 FOTO)</h2>
-            <p class="text-xs text-red-600 mb-2 font-semibold">*Pilih langsung 2 foto di dalam folder HP/Laptop Anda.</p>
+            <h2 class="section-title">VI. DOKUMENTASI FOTO (MAKS 2 FOTO)</h2>
+            <p class="text-xs text-red-600 mb-2 font-semibold">*PENTING: Pilih 2 foto sekaligus di dalam folder HP/Laptop Anda.</p>
             <input type="file" id="in-foto" accept="image/*" multiple class="input-field cursor-pointer">
 
             <h2 class="section-title mb-5">TANDA TANGAN DIGITAL</h2>
-            <div class="grid grid-cols-2 gap-6 mb-8">
-                <div class="bg-blue-50 p-4 border border-blue-200 rounded-xl flex flex-col items-center">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-blue-50 p-4 border border-blue-200 rounded-xl flex flex-col items-center w-full">
                     <p class="text-sm font-bold text-center text-blue-900 mb-2">Tim Gulkarmat</p>
-                    <canvas id="sig-pad-1" width="280" height="120" class="border border-blue-300 bg-white cursor-crosshair rounded-lg w-full"></canvas>
-                    <button class="text-xs font-bold text-red-500 mt-2 btn-clear-sig hover:underline" data-canvas="sig-pad-1">Hapus TTD</button>
+                    <canvas id="sig-pad-1" width="600" height="300" class="border border-blue-300 bg-white cursor-crosshair rounded-lg w-full h-48 touch-none"></canvas>
+                    <button class="text-xs font-bold text-red-500 mt-2 btn-clear-sig hover:underline" data-canvas="sig-pad-1">Hapus TTD Gulkarmat</button>
                 </div>
-                <div class="bg-blue-50 p-4 border border-blue-200 rounded-xl flex flex-col items-center">
+                <div class="bg-blue-50 p-4 border border-blue-200 rounded-xl flex flex-col items-center w-full">
                     <p class="text-sm font-bold text-center text-blue-900 mb-2">Tim PAM JAYA</p>
-                    <canvas id="sig-pad-2" width="280" height="120" class="border border-blue-300 bg-white cursor-crosshair rounded-lg w-full"></canvas>
-                    <button class="text-xs font-bold text-red-500 mt-2 btn-clear-sig hover:underline" data-canvas="sig-pad-2">Hapus TTD</button>
+                    <canvas id="sig-pad-2" width="600" height="300" class="border border-blue-300 bg-white cursor-crosshair rounded-lg w-full h-48 touch-none"></canvas>
+                    <button class="text-xs font-bold text-red-500 mt-2 btn-clear-sig hover:underline" data-canvas="sig-pad-2">Hapus TTD PAM JAYA</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mt-12 border-t-2 border-gray-100 pt-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 border-t-2 border-gray-100 pt-8">
                 <button id="btn-preview" class="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-4 rounded-xl shadow-lg transition-transform transform hover:scale-[1.03] flex justify-center items-center text-lg">
                     <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                     PREVIEW DOKUMEN
@@ -170,20 +166,21 @@
         </form>
     </div>
 
-    <div id="preview-modal" class="fixed inset-0 z-50 bg-gray-900 bg-opacity-90 hidden overflow-y-auto pt-6 pb-10 flex flex-col items-center">
+    <div id="preview-modal" class="fixed inset-0 z-50 bg-gray-900 bg-opacity-90 hidden overflow-y-auto pt-6 pb-10 flex flex-col items-center px-2">
         
-        <div class="sticky top-4 z-50 flex gap-4 mb-6">
-            <button id="btn-modal-back" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-full font-bold shadow-2xl flex items-center transition-transform transform hover:scale-105">
+        <div class="sticky top-4 z-50 flex flex-wrap justify-center gap-2 md:gap-4 mb-6 w-full max-w-[210mm]">
+            <button id="btn-modal-back" class="bg-gray-600 hover:bg-gray-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-bold shadow-2xl flex items-center text-sm md:text-base">
                 ← Kembali
             </button>
-            <button id="btn-modal-download" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-bold shadow-2xl flex items-center transition-transform transform hover:scale-105">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <button id="btn-modal-download" class="bg-red-600 hover:bg-red-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-bold shadow-2xl flex items-center text-sm md:text-base">
+                <svg class="w-4 h-4 md:w-5 md:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 Download PDF
             </button>
         </div>
         
-        <div id="pdf-render-area">
-            <div id="page-1" class="paper pt-10 pb-10 px-12 paper-text font-arial">
+        <div id="pdf-render-area" class="max-w-[210mm] w-full transform origin-top overflow-hidden bg-white shadow-lg">
+            
+            <div id="page-1" class="paper pt-10 pb-10 px-12 paper-text font-arial mx-auto">
                 <div class="border-b-[3px] border-black pb-2 mb-5">
                     <div class="flex items-center w-full relative">
                         <div class="absolute left-0 top-0 w-[95px]">
@@ -258,7 +255,7 @@
                 </table>
             </div>
 
-            <div id="page-2" class="paper pt-10 pb-10 px-12 paper-text font-arial">
+            <div id="page-2" class="paper pt-10 pb-10 px-12 paper-text font-arial mx-auto">
                 <h3 class="font-bold">V. Kesimpulan</h3>
                 <p class="mb-2">Berdasarkan hasil pemeriksaan, hidran tersebut dinyatakan:</p>
                 <div class="ml-4 mb-2">
@@ -293,7 +290,7 @@
                         <div class="w-1/2 flex flex-col items-center justify-end">
                             <p class="font-bold mb-0">Tim Pemeriksa Sudin Gulkarmat Jakarta</p>
                             <div class="h-[75px] w-full flex justify-center items-center relative">
-                                <img id="img-sig-1" class="h-full absolute hidden z-10" style="mix-blend-mode: multiply;">
+                                <img id="img-sig-1" class="h-full object-contain absolute hidden z-10" style="mix-blend-mode: multiply;">
                             </div>
                             <p class="font-bold underline text-sm mt-0" id="out-tt-pem1-nama">...................................</p>
                         </div>
@@ -302,7 +299,7 @@
                             <p class="mb-1">Jakarta, <span id="out-tt-tgl-2">............</span> <span id="out-tahun-cetak">2026</span></p>
                             <p class="font-bold mb-0">Tim Pemeriksa PAM JAYA</p>
                             <div class="h-[75px] w-full flex justify-center items-center relative">
-                                <img id="img-sig-2" class="h-full absolute hidden z-10" style="mix-blend-mode: multiply;">
+                                <img id="img-sig-2" class="h-full object-contain absolute hidden z-10" style="mix-blend-mode: multiply;">
                             </div>
                             <p class="font-bold underline text-sm mt-0" id="out-tt-pem2-nama">...................................</p>
                         </div>

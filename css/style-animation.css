@@ -1,0 +1,305 @@
+:root {
+  --bg: #0d0e10;
+  --surface: #16181c;
+  --text: #f0f0f0;
+  --muted: #8a8f9a;
+  --red: #c0392b;
+  --orange: #e67e22;
+  --green: #27ae60;
+  --blue: #2980b9;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body.index-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+#particles-js {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* =========================================
+   STYLE ANTIGRAVITY (HEADER LEBAR & LUAS)
+   ========================================= */
+.main-container {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 1100px; 
+  padding: 80px 20px 60px 20px;
+  width: 100%;
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-container {
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.1s;
+}
+
+.logo-container img {
+  width: 80px; 
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(192,57,43,0.5));
+}
+
+#typewriter-text {
+  font-size: clamp(32px, 5vw, 64px); 
+  font-weight: 800;
+  letter-spacing: -1.5px; 
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 16px;
+  max-width: 900px;
+  min-height: 70px;
+}
+
+#typewriter-text::after {
+  content: '|';
+  color: var(--orange);
+  animation: blinkCursor 0.75s step-end infinite;
+  margin-left: 4px;
+  font-weight: 400;
+}
+
+@keyframes blinkCursor {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 25px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.6s;
+}
+
+.global-desc {
+  font-size: 18px; 
+  color: #b0b5c0;
+  max-width: 760px;
+  margin: 0 auto 48px;
+  line-height: 1.6;
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.8s;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   GRID 4 TOMBOL (1 BARIS DESKTOP, 2 BARIS MOBILE)
+   ========================================= */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 Kolom = 1 Baris di Desktop */
+  gap: 16px;
+  width: 100%;
+  max-width: 850px; /* Diperlebar agar 4 tombol memanjang muat dengan rapi */
+  margin: 0 auto;
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 1s;
+}
+
+.menu-card {
+  background: rgba(22, 24, 28, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px; 
+  padding: 14px 20px;
+  text-decoration: none;
+  color: var(--text);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Teks dan ikon selalu di tengah */
+  gap: 10px;
+}
+
+.nav-icon { font-size: 20px; color: var(--muted); transition: color 0.3s ease; }
+.nav-label { font-size: 12px; font-weight: 700; letter-spacing: 0.5px; color: #fff; white-space: nowrap; }
+
+.card-kebakaran:hover { border-color: var(--red); box-shadow: 0 8px 24px rgba(192, 57, 43, 0.25); transform: translateY(-3px); background: rgba(192,57,43,0.05); }
+.card-kebakaran:hover .nav-icon { color: var(--red); }
+
+.card-penyelamatan:hover { border-color: var(--orange); box-shadow: 0 8px 24px rgba(230, 126, 34, 0.25); transform: translateY(-3px); background: rgba(230,126,34,0.05); }
+.card-penyelamatan:hover .nav-icon { color: var(--orange); }
+
+.card-bangunan:hover { border-color: var(--green); box-shadow: 0 8px 24px rgba(39, 174, 96, 0.25); transform: translateY(-3px); background: rgba(39,174,96,0.05); }
+.card-bangunan:hover .nav-icon { color: var(--green); }
+
+.card-dialog:hover { border-color: var(--blue); box-shadow: 0 8px 24px rgba(41, 128, 185, 0.25); transform: translateY(-3px); background: rgba(41,128,185,0.05); }
+.card-dialog:hover .nav-icon { color: var(--blue); }
+
+
+/* =========================================
+   SCROLL ANIMASI (KIRI/KANAN) UNTUK SECTION BAWAH
+   ========================================= */
+.details-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 800px;
+  padding: 40px 20px 80px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.scroll-hidden-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: all 0.9s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.scroll-hidden-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: all 0.9s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.scroll-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.section-box {
+  background: rgba(22, 24, 28, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 40px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  text-align: left;
+  transition: border-color 0.4s ease;
+}
+
+.section-box h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-box p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.section-btn {
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 28px;
+  border-radius: 30px; 
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.box-kebakaran:hover { border-color: rgba(192, 57, 43, 0.3); }
+.box-kebakaran h2 span { color: var(--red); font-size: 24px; }
+.btn-kebakaran { background: linear-gradient(135deg, #922b21, var(--red)); box-shadow: 0 4px 15px rgba(192, 57, 43, 0.3); }
+.btn-kebakaran:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(192, 57, 43, 0.5); }
+
+.box-penyelamatan:hover { border-color: rgba(230, 126, 34, 0.3); }
+.box-penyelamatan h2 span { color: var(--orange); font-size: 24px;}
+.btn-penyelamatan { background: linear-gradient(135deg, #b76117, var(--orange)); box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3); }
+.btn-penyelamatan:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(230, 126, 34, 0.5); }
+
+.box-bangunan:hover { border-color: rgba(39, 174, 96, 0.3); }
+.box-bangunan h2 span { color: var(--green); font-size: 24px;}
+.btn-bangunan { background: linear-gradient(135deg, #1e7e34, var(--green)); box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
+.btn-bangunan:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5); }
+
+.box-dialog:hover { border-color: rgba(41, 128, 185, 0.3); }
+.box-dialog h2 span { color: var(--blue); font-size: 24px;}
+.btn-dialog { background: linear-gradient(135deg, #1f618d, var(--blue)); box-shadow: 0 4px 15px rgba(41, 128, 185, 0.3); }
+.btn-dialog:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(41, 128, 185, 0.5); }
+
+/* Modal Foto */
+.photo-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px); cursor: pointer; }
+.photo-modal.open { display: flex; }
+.photo-modal img { max-width: 88vw; max-height: 88vh; border-radius: 16px; box-shadow: 0 24px 80px rgba(0,0,0,.7); animation: slideUp .25s ease; object-fit: contain; }
+
+/* =========================================
+   OPTIMASI MOBILE (2 BARIS X 2 KOLOM)
+   ========================================= */
+@media (max-width: 768px) {
+  body.index-page .main-container { padding-top: 40px; }
+  body.index-page #typewriter-text { min-height: 40px; margin-bottom: 8px;}
+  body.index-page .subtitle { font-size: 11px; margin-bottom: 15px; }
+  body.index-page .global-desc { font-size: 14px; margin-bottom: 32px; padding: 0 10px; }
+  
+  body.index-page .menu-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 Kolom = Menjadi 2 Baris di HP */
+    gap: 10px;
+    padding: 0 10px;
+  }
+  
+  .menu-card { padding: 12px 14px; }
+  .nav-icon { font-size: 16px; }
+  .nav-label { font-size: 11px; }
+
+  body.index-page .details-container { padding-top: 10px; gap: 24px; }
+  body.index-page .section-box { padding: 24px; }
+  body.index-page .section-box h2 { font-size: 15px; }
+  body.index-page .section-box p { font-size: 13px; margin-bottom: 20px; }
+}
+
+/* Animasi Dashboard (Biarkan utuh) */
+@keyframes fadeInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+.title-banner { opacity: 0; animation: fadeInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.1s; }
+.filter-bar { opacity: 0; animation: fadeInRight 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.2s; }
+.stats-card:nth-child(1) { opacity: 0; animation: fadeInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.3s; }
+.stats-card:nth-child(2) { opacity: 0; animation: fadeInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.4s; }
+.stats-card:nth-child(3) { opacity: 0; animation: fadeInRight 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.5s; }
+.stats-card:nth-child(4) { opacity: 0; animation: fadeInRight 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.6s; }
+.chart-card:nth-child(1) { opacity: 0; animation: fadeInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.6s; }
+.chart-card:nth-child(2) { opacity: 0; animation: fadeInRight 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.7s; }
+.table-section { opacity: 0; animation: fadeInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.8s; }
+.download-section { opacity: 0; animation: fadeInRight 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.9s; }

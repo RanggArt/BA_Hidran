@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Berita Acara Pemeriksaan Hidran</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="js/tailwind.config.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800 pb-20 pt-10">
+
+    <div class="max-w-3xl mx-auto bg-white p-10 shadow-2xl rounded-2xl border border-gray-200">
+        <form id="ba-form" onsubmit="return false;">
+            <div class="text-center mb-8 border-b-2 border-red-500 pb-4">
+                <h1 class="text-3xl font-extrabold text-brand-600 mb-2">Form Berita Acara Hidran</h1>
+                <p class="text-sm text-gray-500">Lengkapi seluruh data di bawah ini.</p>
+            </div>
+
+            <h2 class="section-title">HEADER & WAKTU PEMERIKSAAN</h2>
+            <label>Nomor Dokumen Berita Acara <span class="text-red-500">*</span></label>
+            <div class="flex items-center space-x-2 w-full bg-gray-50 p-2 border rounded">
+                <span class="text-sm">Nomor:</span>
+                <input type="text" id="in-no-urut" required class="input-field !w-20 !py-1 text-center font-bold" placeholder=".....">
+                <span class="font-bold">/ BA-PH /</span>
+                <input type="text" id="in-kode-bln" required class="input-field !w-20 !py-1 text-center font-bold" placeholder="......">
+                <span class="font-bold">/</span>
+                <input type="text" id="in-tahun-dok" required class="input-field !w-24 !py-1 text-center font-bold" value="2026">
+            </div>
+
+            <div class="mt-4 bg-blue-50 border border-blue-100 p-3 rounded">
+                <label class="!mt-0 text-blue-800 font-semibold">Tanggal Pelaksanaan <span class="text-red-500">*</span></label>
+                <input type="date" id="in-tanggal-lengkap" required class="input-field mt-1 cursor-pointer">
+            </div>
+
+            <h2 class="section-title">I. DATA LOKASI</h2>
+            <label>Alamat Lengkap <span class="text-red-500">*</span></label>
+            <textarea id="in-alamat" required class="input-field" rows="2" placeholder="Masukkan nama jalan, nomor, RT/RW..."></textarea>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label>Kecamatan <span class="text-red-500">*</span></label>
+                    <select id="in-kecamatan" required class="input-field cursor-pointer">
+                        <option value="">Pilih Kecamatan...</option>
+                        <option value="Cilincing">Cilincing</option>
+                        <option value="Kelapa Gading">Kelapa Gading</option>
+                        <option value="Koja">Koja</option>
+                        <option value="Pademangan">Pademangan</option>
+                        <option value="Penjaringan">Penjaringan</option>
+                        <option value="Tanjung Priok">Tanjung Priok</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Kelurahan <span class="text-red-500">*</span></label>
+                    <select id="in-kelurahan" required class="input-field cursor-pointer" disabled>
+                        <option value="">Pilih Kelurahan...</option>
+                    </select>
+                </div>
+            </div>
+
+            <h2 class="section-title">II. TIM PEMERIKSA</h2>
+            <div class="grid grid-cols-2 gap-4 border p-4 rounded bg-gray-50">
+                <div class="col-span-2 font-bold text-gray-700">Pemeriksa 1 (Gulkarmat)</div>
+                <div><label>Nama <span class="text-red-500">*</span></label><input type="text" id="in-pem1-nama" required class="input-field" placeholder="Nama Lengkap"></div>
+                <div><label>Jabatan <span class="text-red-500">*</span></label><input type="text" id="in-pem1-jab" required class="input-field" placeholder="Jabatan"></div>
+                
+                <div class="col-span-2 font-bold text-gray-700 mt-4 border-t pt-4">Pemeriksa 2 (PAM JAYA)</div>
+                <div><label>Nama <span class="text-red-500">*</span></label><input type="text" id="in-pem2-nama" required class="input-field" placeholder="Nama Lengkap"></div>
+                <div><label>Jabatan <span class="text-red-500">*</span></label><input type="text" id="in-pem2-jab" required class="input-field" placeholder="Jabatan"></div>
+            </div>
+
+            <h2 class="section-title">III. OBJEK PEMERIKSAAN</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div><label>Nomor/Kode Rek Hydrant <span class="text-red-500">*</span></label><input type="text" id="in-rek-hydrant" required class="input-field" placeholder="Contoh: 12.3456"></div>
+                <div><label>Kode Hydrant Kota <span class="text-red-500">*</span></label><input type="text" id="in-kode-hydrant" required class="input-field" placeholder="Contoh: H-102"></div>
+            </div>
+
+            <h2 class="section-title">IV. HASIL PEMERIKSAAN</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label>1. Kondisi fisik badan hidran <span class="text-red-500">*</span></label>
+                    <select id="in-hasil-1" required class="input-field" onchange="updateCheckboxes('hasil-1', this.value, ['Baik', 'Rusak', 'Hilang'])">
+                        <option value="">Pilih...</option><option value="Baik">Baik</option><option value="Rusak">Rusak</option><option value="Hilang">Hilang</option>
+                    </select>
+                </div>
+                <div>
+                    <label>2. Kondisi Tekanan Air <span class="text-red-500">*</span></label>
+                    <select id="in-hasil-2" required class="input-field" onchange="updateCheckboxes('hasil-2', this.value, ['Besar', 'Kecil', 'Tidak Keluar'])">
+                        <option value="">Pilih...</option><option value="Besar">Besar</option><option value="Kecil">Kecil</option><option value="Tidak Keluar">Tidak Keluar</option>
+                    </select>
+                </div>
+                <div>
+                    <label>3. Kondisi Patok Pengaman <span class="text-red-500">*</span></label>
+                    <select id="in-hasil-3" required class="input-field" onchange="updateCheckboxes('hasil-3', this.value, ['ada 4 Baik', 'Rusak', 'Tidak ada'])">
+                        <option value="">Pilih...</option><option value="ada 4 Baik">ada 4 Baik</option><option value="Rusak">Rusak</option><option value="Tidak ada">Tidak ada</option>
+                    </select>
+                </div>
+                <div>
+                    <label>4. Meter air Hydrant <span class="text-red-500">*</span></label>
+                    <select id="in-hasil-4" required class="input-field" onchange="updateCheckboxes('hasil-4', this.value, ['Baik', 'Rusak', 'tertimbun', 'Tidak Bisa di Cek'])">
+                        <option value="">Pilih...</option><option value="Baik">Baik</option><option value="Rusak">Rusak</option><option value="tertimbun">Tertimbun</option><option value="Tidak Bisa di Cek">Tidak Bisa di Cek</option>
+                    </select>
+                </div>
+                <div>
+                    <label>5. Kondisi Cat Hydrant <span class="text-red-500">*</span></label>
+                    <select id="in-hasil-5" required class="input-field" onchange="updateCheckboxes('hasil-5', this.value, ['Baik', 'Pudar'])">
+                        <option value="">Pilih...</option><option value="Baik">Baik</option><option value="Pudar">Pudar</option>
+                    </select>
+                </div>
+                <div>
+                    <label>6. Fungsi operasional <span class="text-red-500">*</span></label>
+                    <select id="in-hasil-6" required class="input-field" onchange="updateCheckboxes('hasil-6', this.value, ['Berfungsi', 'Tidak Berfungsi'])">
+                        <option value="">Pilih...</option><option value="Berfungsi">Berfungsi</option><option value="Tidak Berfungsi">Tidak Berfungsi</option>
+                    </select>
+                </div>
+            </div>
+
+            <h2 class="section-title">V. KESIMPULAN</h2>
+            <label>Status Kelayakan <span class="text-red-500">*</span></label>
+            <select id="in-status" required class="input-field mb-3" onchange="updateStatus(this.value)">
+                <option value="">Pilih Status...</option>
+                <option value="Layak Operasi">Layak Operasi</option>
+                <option value="Layak Operasi dengan Catatan">Layak Operasi dengan Catatan</option>
+                <option value="Tidak Layak Operasi">Tidak Layak Operasi</option>
+            </select>
+            <label>Catatan/Rekomendasi <span class="text-red-500">*</span></label>
+            <textarea id="in-catatan" required class="input-field" rows="3" placeholder="Tulis catatan lapangan..."></textarea>
+
+            <h2 class="section-title">VI. DOKUMENTASI FOTO (HALAMAN 2 - MAKS 2 FOTO)</h2>
+            <p class="text-xs text-red-600 mb-2 font-semibold">*Pilih langsung 2 foto di dalam folder HP/Laptop Anda.</p>
+            <input type="file" id="in-foto" accept="image/*" multiple class="input-field cursor-pointer">
+
+            <h2 class="section-title mb-5">TANDA TANGAN DIGITAL</h2>
+            <div class="grid grid-cols-2 gap-6 mb-8">
+                <div class="bg-blue-50 p-4 border border-blue-200 rounded-xl flex flex-col items-center">
+                    <p class="text-sm font-bold text-center text-blue-900 mb-2">Tim Gulkarmat</p>
+                    <canvas id="sig-pad-1" width="280" height="120" class="border border-blue-300 bg-white cursor-crosshair rounded-lg w-full"></canvas>
+                    <button class="text-xs font-bold text-red-500 mt-2 btn-clear-sig hover:underline" data-canvas="sig-pad-1">Hapus TTD</button>
+                </div>
+                <div class="bg-blue-50 p-4 border border-blue-200 rounded-xl flex flex-col items-center">
+                    <p class="text-sm font-bold text-center text-blue-900 mb-2">Tim PAM JAYA</p>
+                    <canvas id="sig-pad-2" width="280" height="120" class="border border-blue-300 bg-white cursor-crosshair rounded-lg w-full"></canvas>
+                    <button class="text-xs font-bold text-red-500 mt-2 btn-clear-sig hover:underline" data-canvas="sig-pad-2">Hapus TTD</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mt-12 border-t-2 border-gray-100 pt-8">
+                <button id="btn-preview" class="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-4 rounded-xl shadow-lg transition-transform transform hover:scale-[1.03] flex justify-center items-center text-lg">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    PREVIEW DOKUMEN
+                </button>
+                <button id="btn-download-main" class="w-full bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 rounded-xl shadow-lg transition-transform transform hover:scale-[1.03] flex justify-center items-center text-lg">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    SIMPAN PDF
+                </button>
+            </div>
+
+            <div class="mt-4">
+                <button type="button" id="btn-reset-form" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 rounded-xl shadow transition-colors flex justify-center items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    Bersihkan Form / Ulang Dari Awal
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div id="preview-modal" class="fixed inset-0 z-50 bg-gray-900 bg-opacity-90 hidden overflow-y-auto pt-6 pb-10 flex flex-col items-center">
+        
+        <div class="sticky top-4 z-50 flex gap-4 mb-6">
+            <button id="btn-modal-back" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-full font-bold shadow-2xl flex items-center transition-transform transform hover:scale-105">
+                ← Kembali
+            </button>
+            <button id="btn-modal-download" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-bold shadow-2xl flex items-center transition-transform transform hover:scale-105">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Download PDF
+            </button>
+        </div>
+        
+        <div id="pdf-render-area">
+            <div id="page-1" class="paper pt-10 pb-10 px-12 paper-text font-arial">
+                <div class="border-b-[3px] border-black pb-2 mb-5">
+                    <div class="flex items-center w-full relative">
+                        <div class="absolute left-0 top-0 w-[95px]">
+                            <img id="logo-dki" src="assets/logo_dki.jpeg" alt="Logo Jaya Raya" class="w-full h-auto object-contain">
+                        </div>
+                        <div class="w-full text-center pl-[100px] pr-[10px]">
+                            <p class="text-[11pt] uppercase leading-[1.1]">Pemerintah Provinsi Daerah Khusus Ibukota Jakarta</p>
+                            <p class="text-[11pt] uppercase leading-[1.1]">Dinas Penanggulangan Kebakaran dan Penyelamatan</p>
+                            <div class="mt-1 mb-1.5">
+                                <p class="text-[13pt] font-bold uppercase tracking-tight leading-[1] whitespace-nowrap">Suku Dinas Penanggulangan Kebakaran dan Penyelamatan</p>
+                                <p class="text-[13pt] font-bold uppercase tracking-tight leading-[1]">Kota Administrasi Jakarta Utara</p>
+                            </div>
+                            <p class="text-[9pt] leading-[1.1]">Jalan Pemadam Kebakaran No. 113; Telepon 44834444, 44835555; Faksimile 44833513</p>
+                            <p class="text-[9pt] leading-[1.1]"><span class="italic">Website</span> https://pemadam.jakarta.go.id; <span class="italic">E-mail</span> damkarjakut@jakarta.go.id</p>
+                        </div>
+                    </div>
+                    <div class="relative w-full h-5 mt-1">
+                        <p class="text-[10pt] tracking-[0.3em] absolute w-full text-center">JAKARTA</p>
+                        <p class="text-[10pt] absolute right-0 bottom-0">Kode Pos : 14130</p>
+                    </div>
+                </div>
+
+                <div class="text-center mb-6">
+                    <h1 class="font-bold text-[12pt] underline uppercase tracking-wide mb-1">BERITA ACARA PEMERIKSAAN HIDRAN</h1>
+                    <p class="font-bold text-[11pt]">Nomor: <span id="out-no-urut">.....</span>/BA-PH/<span id="out-kode-bln">......</span>/<span id="out-tahun-dok">2026</span></p>
+                </div>
+
+                <p class="mb-3 text-justify indent-8">
+                    Pada hari ini <span id="out-hari">....................</span> tanggal <span id="out-tgl-bln">....................</span> tahun <span id="out-tahun-waktu">....................</span>, kami yang bertanda tangan di bawah ini telah melaksanakan pemeriksaan hidran di wilayah Kota Administrasi Jakarta Utara dengan hasil sebagai berikut:
+                </p>
+
+                <h3 class="font-bold mt-2">I. Data Lokasi</h3>
+                <table class="w-full ml-4 mb-2">
+                    <tr><td class="w-40 align-top">Alamat</td><td class="w-4 align-top">:</td><td><span id="out-alamat">................................................................................</span></td></tr>
+                    <tr><td>Kelurahan</td><td>:</td><td><span id="out-kelurahan">...................................</span></td></tr>
+                    <tr><td>Kecamatan</td><td>:</td><td><span id="out-kecamatan">...................................</span></td></tr>
+                    <tr><td>Kota Administrasi</td><td>:</td><td>Jakarta Utara</td></tr>
+                </table>
+
+                <h3 class="font-bold mt-2">II. Tim Pemeriksa</h3>
+                <table class="w-full ml-4 mb-2">
+                    <tr><td class="w-6 align-top">1.</td><td class="w-32 align-top">Nama</td><td class="w-4 align-top">:</td><td><span id="out-pem1-nama">...................................</span></td></tr>
+                    <tr><td></td><td>Jabatan</td><td>:</td><td><span id="out-pem1-jab">...................................</span></td></tr>
+                    <tr><td class="align-top pt-1">2.</td><td class="align-top pt-1">Nama</td><td class="pt-1">:</td><td class="pt-1"><span id="out-pem2-nama">...................................</span></td></tr>
+                    <tr><td></td><td>Jabatan</td><td>:</td><td><span id="out-pem2-jab">...................................</span></td></tr>
+                </table>
+
+                <h3 class="font-bold mt-2">III. Objek Pemeriksaan</h3>
+                <table class="w-full ml-4 mb-2">
+                    <tr><td class="w-48">Jenis Hidran</td><td class="w-4">:</td><td>Hidran Kota</td></tr>
+                    <tr><td>Nomor/Kode rek Hydrant</td><td>:</td><td><span id="out-rek-hydrant">...................................</span></td></tr>
+                    <tr><td>Kode Hydrant Kota</td><td>:</td><td><span id="out-kode-hydrant">...................................</span></td></tr>
+                </table>
+
+                <h3 class="font-bold mt-2">IV. Hasil Pemeriksaan :</h3>
+                <table class="w-full preview-table mt-1 text-[10pt]">
+                    <thead>
+                        <tr class="bg-gray-100 text-center font-bold">
+                            <th class="w-8">No</th>
+                            <th class="w-64">Uraian Pemeriksaan</th>
+                            <th>Kondisi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="text-center">1</td><td>Kondisi fisik badan hidran</td><td id="out-hasil-1"></td></tr>
+                        <tr><td class="text-center">2</td><td>Kondisi Tekanan Air</td><td id="out-hasil-2"></td></tr>
+                        <tr><td class="text-center">3</td><td>Kondisi Patok Pengaman Hydrant</td><td id="out-hasil-3"></td></tr>
+                        <tr><td class="text-center">4</td><td>Meter air Hydrant</td><td id="out-hasil-4"></td></tr>
+                        <tr><td class="text-center">5</td><td>Kondisi Cat Hydrant</td><td id="out-hasil-5"></td></tr>
+                        <tr><td class="text-center">6</td><td>Fungsi operasional</td><td id="out-hasil-6"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="page-2" class="paper pt-10 pb-10 px-12 paper-text font-arial">
+                <h3 class="font-bold">V. Kesimpulan</h3>
+                <p class="mb-2">Berdasarkan hasil pemeriksaan, hidran tersebut dinyatakan:</p>
+                <div class="ml-4 mb-2">
+                    <p id="stat-layak"><span class="cb-icon">☐</span> Layak Operasi</p>
+                    <p id="stat-catatan"><span class="cb-icon">☐</span> Layak Operasi dengan Catatan</p>
+                    <p id="stat-tidak"><span class="cb-icon">☐</span> Tidak Layak Operasi</p>
+                </div>
+                <p>Catatan/Rekomendasi:</p>
+                <div class="w-full border border-gray-300 min-h-[60px] p-2 mt-1 mb-4 italic text-gray-700">
+                    <span id="out-catatan"></span>
+                </div>
+
+                <h3 class="font-bold">VI. Penutup</h3>
+                <p class="mb-4 text-justify indent-8">
+                    Demikian Berita Acara Pemeriksaan Hidran ini dibuat dengan sebenarnya untuk dipergunakan sebagaimana mestinya.
+                </p>
+
+                <h3 class="font-bold">VI. Dokumentasi Foto hasil Survei</h3>
+                <div class="mt-2 w-full flex justify-between gap-4 mb-6">
+                    <div class="w-[48%] h-44 border border-gray-400 flex items-center justify-center bg-gray-50 overflow-hidden relative">
+                        <span id="out-foto-text-1" class="text-gray-400 text-sm">Lampiran Foto 1</span>
+                        <img id="out-foto-img-1" class="absolute inset-0 w-full h-full object-contain hidden" alt="Foto 1">
+                    </div>
+                    <div class="w-[48%] h-44 border border-gray-400 flex items-center justify-center bg-gray-50 overflow-hidden relative">
+                        <span id="out-foto-text-2" class="text-gray-400 text-sm">Lampiran Foto 2</span>
+                        <img id="out-foto-img-2" class="absolute inset-0 w-full h-full object-contain hidden" alt="Foto 2">
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <div class="flex justify-between text-center px-4">
+                        <div class="w-1/2 flex flex-col items-center justify-end">
+                            <p class="font-bold mb-0">Tim Pemeriksa Sudin Gulkarmat Jakarta</p>
+                            <div class="h-[75px] w-full flex justify-center items-center relative">
+                                <img id="img-sig-1" class="h-full absolute hidden z-10" style="mix-blend-mode: multiply;">
+                            </div>
+                            <p class="font-bold underline text-sm mt-0" id="out-tt-pem1-nama">...................................</p>
+                        </div>
+                        
+                        <div class="w-1/2 flex flex-col items-center justify-end">
+                            <p class="mb-1">Jakarta, <span id="out-tt-tgl-2">............</span> <span id="out-tahun-cetak">2026</span></p>
+                            <p class="font-bold mb-0">Tim Pemeriksa PAM JAYA</p>
+                            <div class="h-[75px] w-full flex justify-center items-center relative">
+                                <img id="img-sig-2" class="h-full absolute hidden z-10" style="mix-blend-mode: multiply;">
+                            </div>
+                            <p class="font-bold underline text-sm mt-0" id="out-tt-pem2-nama">...................................</p>
+                        </div>
+                    </div>
+
+                    <div class="text-center w-full mt-6 mb-2">
+                        <p class="text-[11pt]">Mengetahui,</p>
+                    </div>
+
+                    <div class="flex justify-between text-center">
+                        <div class="w-1/2">
+                            <p class="font-bold">Kepala Suku Dinas Penanggulangan<br>Kebakaran dan Penyelamatan Kota<br>Administrasi Jakarta Utara,</p>
+                            <div style="height: 75px;"></div>
+                            <p class="font-bold underline">Budi Haryono, S.Sos., M.EC.Dev.</p>
+                            <p>NIP. 197309281997031002</p>
+                        </div>
+                        <div class="w-1/2 pt-6">
+                            <p class="font-bold">Koordinator PAM Jaya Regional<br>Jakarta Utara</p>
+                            <div style="height: 75px;"></div>
+                            <p class="font-bold underline">.....................................................</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/form.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/pdf.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #ef4444; }
+
+/* A4 Paper Styling */
+.pdf-hidden-container {
+    position: absolute;
+    top: 0;
+    left: -9999px;
+    z-index: -999;
+}
+
+.paper {
+    width: 210mm;
+    height: 297mm;
+    background: white;
+    box-sizing: border-box;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Typography for Formal Paper */
+.paper-text { 
+    font-family: Arial, Helvetica, sans-serif; 
+    color: #000; 
+    font-size: 11pt; 
+    line-height: 1.5; 
+}
+
+/* Input focus styling */
+.input-field {
+    width: 100%; border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 0.5rem;
+    transition: all 0.2s; outline: none; font-size: 0.875rem;
+}
+.input-field:focus { border-color: #ef4444; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2); }
+
+label { display: block; font-weight: 500; font-size: 0.875rem; color: #374151; margin-bottom: 0.25rem; margin-top: 0.75rem; }
+.section-title { font-weight: 600; color: #dc2626; border-bottom: 2px solid #fecaca; padding-bottom: 0.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+
+/* Table Styles for PDF */
+.preview-table, .preview-table th, .preview-table td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 4px 8px;
+}
+
+/* Checkbox styling on PDF (DIKEMBALIKAN KE FORMAT ASLI) */
+/* Checkbox styling on PDF (DIPERBAIKI UNTUK HTML2CANVAS) */
+.cb-icon { 
+    font-size: 14pt; /* Menggunakan ukuran pasti agar tidak loncat di PDF */
+    vertical-align: middle; 
+}
+.cb-checked { 
+    color: #2563eb; 
+    font-weight: bold; 
+}

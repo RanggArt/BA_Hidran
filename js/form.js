@@ -20,6 +20,7 @@ bindData('in-pem1-jab', 'out-pem1-jab');
 bindData('in-pem2-jab', 'out-pem2-jab');
 bindData('in-rek-hydrant', 'out-rek-hydrant');
 bindData('in-kode-hydrant', 'out-kode-hydrant');
+bindData('in-koordinat', 'out-koordinat'); // Bind koordinat
 bindData('in-catatan', 'out-catatan');
 
 document.getElementById('in-pem1-nama').addEventListener('input', (e) => {
@@ -34,13 +35,10 @@ document.getElementById('in-pem2-nama').addEventListener('input', (e) => {
     document.getElementById('out-tt-pem2-nama').innerText = val; 
 });
 
-// LOGIC KALENDER OTOMATIS & AUTO-CLOSE
 const dateInput = document.getElementById('in-tanggal-lengkap');
 if (dateInput) {
     dateInput.addEventListener('change', function(e) {
-        
-        // Memaksa window kalender untuk tertutup setelah memilih tanggal
-        this.blur();
+        this.blur(); // Auto close kalender
         
         const dateVal = e.target.value;
         if (dateVal) {
@@ -65,6 +63,44 @@ if (dateInput) {
             document.getElementById('out-tahun-waktu').innerText = '....................';
             document.getElementById('out-tt-tgl-2').innerText = '............';
             document.getElementById('out-tahun-cetak').innerText = '2026';
+        }
+    });
+}
+
+// LOGIKA GPS / LOKASI KOORDINAT OTOMATIS
+const btnGetLocation = document.getElementById('btn-get-location');
+if (btnGetLocation) {
+    btnGetLocation.addEventListener('click', () => {
+        if (navigator.geolocation) {
+            btnGetLocation.innerText = "Mencari Lokasi...";
+            
+            // Setting agar lebih akurat jika fitur GPS HP diaktifkan
+            const geoOptions = { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 };
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    // Format output menjadi link Google Maps
+                    const mapsLink = `https://maps.google.com/?q=${lat},${lng}`;
+                    
+                    // Masukkan ke kolom input form dan preview cetak PDF
+                    document.getElementById('in-koordinat').value = mapsLink;
+                    document.getElementById('out-koordinat').innerText = mapsLink;
+                    
+                    btnGetLocation.innerText = "📍 Berhasil!";
+                    setTimeout(() => { btnGetLocation.innerText = "📍 Dapatkan Koordinat"; }, 3000);
+                },
+                (error) => {
+                    console.warn(error);
+                    alert("Gagal mendapatkan lokasi. Pastikan GPS menyala dan izinkan browser mengakses lokasi Anda.");
+                    btnGetLocation.innerText = "📍 Dapatkan Koordinat";
+                },
+                geoOptions
+            );
+        } else {
+            alert("Browser HP Anda tidak mendukung fitur Geolocation GPS.");
         }
     });
 }
@@ -107,7 +143,6 @@ selKelurahan.addEventListener('change', function() {
     outKelurahan.innerText = this.value ? this.value : '...................................';
 });
 
-// LOGIKA CEKLIS DIKEMBALIKAN KE VERSI ASLI (Rapi dalam tabel PDF)
 const boxEmpty = '<span class="cb-icon">☐</span>';
 const boxChecked = '<span class="cb-icon cb-checked">☑</span>';
 
@@ -164,23 +199,19 @@ document.getElementById('in-foto').addEventListener('change', function(e) {
     }
 });
 
-// LOGIKA BERSIHKAN FORM / RESET TOTAL (TANPA RELOAD HALAMAN)
+// LOGIKA BERSIHKAN FORM / RESET TOTAL (Menyertakan field koordinat)
 document.getElementById('btn-reset-form').addEventListener('click', () => {
     if(confirm('Hapus seluruh isian dan tanda tangan untuk mulai dari awal?')) {
-        
-        // 1. Bersihkan Data di Form HTML
         document.getElementById('ba-form').reset();
         
-        // 2. Kunci kembali dropdown Kelurahan
         document.getElementById('in-kelurahan').innerHTML = '<option value="">Pilih Kelurahan...</option>';
         document.getElementById('in-kelurahan').disabled = true;
 
-        // 3. Kembalikan teks pada Preview Dokumen menjadi titik-titik bawaan
         const dotFields = [
             'out-hari', 'out-tgl-bln', 'out-tahun-waktu', 
             'out-alamat', 'out-kelurahan', 'out-kecamatan',
             'out-pem1-nama', 'out-pem1-jab', 'out-pem2-nama', 'out-pem2-jab',
-            'out-rek-hydrant', 'out-kode-hydrant', 'out-catatan',
+            'out-rek-hydrant', 'out-kode-hydrant', 'out-koordinat', 'out-catatan',
             'out-tt-pem1-nama', 'out-tt-pem2-nama'
         ];
         dotFields.forEach(id => document.getElementById(id).innerText = '...................................');
@@ -191,29 +222,24 @@ document.getElementById('btn-reset-form').addEventListener('click', () => {
         document.getElementById('out-tt-tgl-2').innerText = '............';
         document.getElementById('out-tahun-cetak').innerText = '2026';
 
-        // 4. Kosongkan Hasil Ceklis Pemeriksaan
         ['out-hasil-1', 'out-hasil-2', 'out-hasil-3', 'out-hasil-4', 'out-hasil-5', 'out-hasil-6'].forEach(id => {
             document.getElementById(id).innerHTML = '';
         });
         
-        // Kembalikan Ceklis Kesimpulan ke default (kosong)
         document.getElementById('stat-layak').innerHTML = boxEmpty + ' Layak Operasi';
         document.getElementById('stat-catatan').innerHTML = boxEmpty + ' Layak Operasi dengan Catatan';
         document.getElementById('stat-tidak').innerHTML = boxEmpty + ' Tidak Layak Operasi';
 
-        // 5. Bersihkan Preview Foto
         document.getElementById('out-foto-img-1').classList.add('hidden');
         document.getElementById('out-foto-text-1').classList.remove('hidden');
         document.getElementById('out-foto-img-2').classList.add('hidden');
         document.getElementById('out-foto-text-2').classList.remove('hidden');
 
-        // 6. Bersihkan Kanvas Tanda Tangan
         const canvas1 = document.getElementById('sig-pad-1');
         const canvas2 = document.getElementById('sig-pad-2');
         canvas1.getContext('2d').clearRect(0, 0, canvas1.width, canvas1.height);
         canvas2.getContext('2d').clearRect(0, 0, canvas2.width, canvas2.height);
         
-        // Scroll kembali ke atas dengan halus
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 });

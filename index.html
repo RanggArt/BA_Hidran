@@ -75,6 +75,17 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><label>Nomor/Kode Rek Hydrant <span class="text-red-500">*</span></label><input type="text" id="in-rek-hydrant" required class="input-field" placeholder="Contoh: 12.3456"></div>
                 <div><label>Kode Hydrant Kota <span class="text-red-500">*</span></label><input type="text" id="in-kode-hydrant" required class="input-field" placeholder="Contoh: H-102"></div>
+                
+                <div class="md:col-span-2">
+                    <label>Titik Koordinat Lokasi Hidran <span class="text-red-500">*</span></label>
+                    <div class="flex flex-col md:flex-row gap-2">
+                        <input type="text" id="in-koordinat" required class="input-field flex-1" placeholder="Klik tombol di samping untuk otomatis ambil link GPS...">
+                        <button type="button" id="btn-get-location" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-bold shadow-md transition-colors w-full md:w-auto flex items-center justify-center">
+                            📍 Dapatkan Koordinat
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-gray-500 mt-1 italic">*Pastikan GPS/Lokasi HP Anda menyala dan izinkan browser mengakses lokasi.</p>
+                </div>
             </div>
 
             <h2 class="section-title">IV. HASIL PEMERIKSAAN</h2>
@@ -167,7 +178,6 @@
     </div>
 
     <div id="preview-modal" class="fixed inset-0 z-50 bg-gray-900 bg-opacity-90 hidden overflow-y-auto pt-6 pb-10 flex flex-col items-center px-2">
-        
         <div class="sticky top-4 z-50 flex flex-wrap justify-center gap-2 md:gap-4 mb-6 w-full max-w-[210mm]">
             <button id="btn-modal-back" class="bg-gray-600 hover:bg-gray-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-bold shadow-2xl flex items-center text-sm md:text-base">
                 ← Kembali
@@ -179,7 +189,6 @@
         </div>
         
         <div id="pdf-render-area" class="max-w-[210mm] w-full transform origin-top overflow-hidden bg-white shadow-lg">
-            
             <div id="page-1" class="paper pt-10 pb-10 px-12 paper-text font-arial mx-auto">
                 <div class="border-b-[3px] border-black pb-2 mb-5">
                     <div class="flex items-center w-full relative">
@@ -233,6 +242,7 @@
                     <tr><td class="w-48">Jenis Hidran</td><td class="w-4">:</td><td>Hidran Kota</td></tr>
                     <tr><td>Nomor/Kode rek Hydrant</td><td>:</td><td><span id="out-rek-hydrant">...................................</span></td></tr>
                     <tr><td>Kode Hydrant Kota</td><td>:</td><td><span id="out-kode-hydrant">...................................</span></td></tr>
+                    <tr><td class="align-top">Titik Koordinat GPS</td><td class="align-top">:</td><td class="align-top"><span id="out-koordinat" class="text-blue-700 underline" style="word-break: break-all;">...................................</span></td></tr>
                 </table>
 
                 <h3 class="font-bold mt-2">IV. Hasil Pemeriksaan :</h3>
